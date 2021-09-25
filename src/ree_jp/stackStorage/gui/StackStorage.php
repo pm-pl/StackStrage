@@ -22,9 +22,8 @@ use ree_jp\stackStorage\virtual\VirtualStackStorage;
 
 class StackStorage
 {
-    const BACK = 45;
-    const NEXT = 53;
-    const CLOSE = 49;
+    const BACK = 18;
+    const NEXT = 26;
     const SYSTEM_ITEM = 1;
 
     public array $storage;
@@ -42,7 +41,6 @@ class StackStorage
             $v = $p->up(2);
             $gui = $this->createGui(self::TITLE . StackStoragePlugin::getVersion(), $v, $this->p->getLevel());
             $p->getLevel()->sendBlocks([$p], [Block::get(BlockIds::CHEST)->setComponents($v->getFloorX(), $v->getFloorY(), $v->getFloorZ())]);
-            $p->getLevel()->sendBlocks([$p], [Block::get(BlockIds::CHEST)->setComponents($v->west()->getFloorX(), $v->getFloorY(), $v->getFloorZ())]);
             $this->gui = $gui;
             StackStoragePlugin::getMain()->getScheduler()->scheduleDelayedTask(
                 new ClosureTask(
@@ -62,7 +60,7 @@ class StackStorage
 
         $gui->clearAll();
 
-        $chunk = array_chunk($this->storage, 45);
+        $chunk = array_chunk($this->storage, 18);
         $count = 0;
 
         if (isset($chunk[$this->page - 1])) {
@@ -132,12 +130,8 @@ class StackStorage
     private function createGui(string $title, Vector3 $v, Level $level): VirtualStackStorage
     {
         $bl = Chest::createTile(Tile::CHEST, $level, Chest::createNBT($v));
-        $bl_2 = Chest::createTile(Tile::CHEST, $level, Chest::createNBT($v->west()));
-        if ($bl instanceof Chest and $bl_2 instanceof Chest) {
-            $bl->setName($title);
-            $bl_2->setName($title);
-            $bl->pairWith($bl_2);
-            return new VirtualStackStorage($bl, $bl_2);
+        if ($bl instanceof Chest) {
+            return new VirtualStackStorage($bl);
         } else {
             throw new Exception('could not open block');
         }

@@ -4,8 +4,8 @@
 namespace ree_jp\stackStorage\virtual;
 
 
-use pocketmine\inventory\DoubleChestInventory;
+use pocketmine\inventory\ChestInventory;
 
-abstract class VirtualGui extends DoubleChestInventory
+abstract class VirtualGui extends ChestInventory
 {
 }
