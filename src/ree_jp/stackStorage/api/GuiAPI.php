@@ -51,7 +51,7 @@ class GuiAPI implements IGuiAPI
         $window = $this->findWindow($p);
         if (!$window instanceof VirtualGui) throw new Exception('gui not found', self::GUI_NOT_FOUND);
 
-        $window->getInventory()->clearAll();
+        $window->clearAll();
         $window->close($p);
         $p->getLevel()->sendBlocks([$p], [$p->getLevel()->getBlock($p->asVector3()->up(2)), $p->getLevel()->getBlock($p->asVector3()->up(2)->west())]);
 //		$p->doCloseInventory();
