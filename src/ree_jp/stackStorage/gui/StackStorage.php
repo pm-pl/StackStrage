@@ -16,6 +16,7 @@ use pocketmine\tile\Chest;
 use pocketmine\tile\Tile;
 use pocketmine\utils\TextFormat;
 use ree_jp\stackStorage\api\GuiAPI;
+use ree_jp\stackStorage\api\StackStorageAPI;
 use ree_jp\stackStorage\stackStoragePlugin;
 use ree_jp\stackStorage\virtual\VirtualStackStorage;
 
@@ -48,6 +49,14 @@ class StackStorage
                         GuiAPI::$instance->sendGui($this->p->getName(), $gui);
                     }
                 ), 3);
+            StackStoragePlugin::getMain()->getScheduler()->scheduleDelayedTask( // もし開けなかったら消す
+                new ClosureTask(
+                    function (int $tick) use ($gui): void {
+                        if (!StackStorageAPI::$instance->isOpen($this->p->getName())) {
+                            GuiAPI::$instance->closeGui($this->p->getName());
+                        }
+                    }
+                ), 10);
         } catch (Exception $ex) {
             $this->p->sendMessage(TextFormat::RED . '>> ' . TextFormat::RESET . 'StackStorage error');
             $this->p->sendMessage(TextFormat::RED . '>> ' . TextFormat::RESET . 'Details : ' . $ex->getMessage());
@@ -75,7 +84,7 @@ class StackStorage
                 if ($item->getMaxStackSize() < $item->getCount()) {
                     $storeCount = $item->getCount();
                     $item->setCount($item->getMaxStackSize());
-                    $item->setNamedTagEntry(new StringTag('stackstorage_store_nbt', base64_decode($item->getCompoundTag())));
+                    $item->setNamedTagEntry(new StringTag('stackstorage_store_nbt', base64_encode($item->getCompoundTag())));
                     $item->setLore(['Count', $storeCount]);
                 }
                 $this->gui->setItem($count, $item);
