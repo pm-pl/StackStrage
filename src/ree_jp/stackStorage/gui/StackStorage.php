@@ -41,6 +41,8 @@ class StackStorage
         try {
             $v = $p->up(2);
             $gui = $this->createGui(self::TITLE . StackStoragePlugin::getVersion(), $v, $this->p->getLevel());
+            if ($v->getFloorX() <= 0) $v = $v->add(-1);
+            if ($v->getFloorZ() <= 0) $v = $v->add(0, 0, -1);
             $p->getLevel()->sendBlocks([$p], [Block::get(BlockIds::CHEST)->setComponents($v->getFloorX(), $v->getFloorY(), $v->getFloorZ())]);
             $this->gui = $gui;
             StackStoragePlugin::getMain()->getScheduler()->scheduleDelayedTask(
