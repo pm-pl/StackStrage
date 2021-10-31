@@ -47,6 +47,8 @@ class StackStoragePlugin extends PluginBase
             sleep(1);
         }
         if ($timer >= 30) {
+            var_dump(Queue::$queues);
+            var_dump(Queue::$task);
             $this->getLogger()->critical('The data could not be saved');
         }
         StackStorageHelper::$instance->close();
