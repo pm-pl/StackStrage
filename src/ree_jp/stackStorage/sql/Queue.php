@@ -49,6 +49,9 @@ class Queue
             self::$cache[$xuid] = [];
             self::$task[$xuid] = StackStoragePlugin::getMain()->getScheduler()->scheduleDelayedTask(new ClosureTask(function (int $currentTick) use ($xuid): void {
                 if (empty(self::$cache[$xuid])) return;
+                foreach (self::$cache[$xuid] as $itema) {
+                    var_dump($itema->getName());
+                }
                 foreach (self::$cache[$xuid] as $item) self::addItem($xuid, $item, true);
                 unset(self::$cache[$xuid]);
                 unset(self::$task[$xuid]);
