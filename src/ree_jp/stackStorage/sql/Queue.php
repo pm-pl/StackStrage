@@ -22,8 +22,8 @@ class Queue
         }
         if (!$isCache && !empty(self::$cache[$xuid])) {
             foreach (self::$cache[$xuid] as $item) self::addItem($xuid, $item, true);
-            unset(self::$cache[$xuid]);
             self::$task[$xuid]->cancel();
+            unset(self::$cache[$xuid]);
             unset(self::$task[$xuid]);
         }
         $isFinalEmpty = empty(self::$queues[$xuid]);
@@ -61,6 +61,10 @@ class Queue
                 return;
             }
         }
+        var_dump("-------------------------------------------------");
+        var_dump(self::$cache[$xuid]);
+        var_dump($item);
+        var_dump("-------------------------------------------------");
         array_push(self::$cache[$xuid], $item);
 //        } else self::addItem($xuid, $item);
     }
