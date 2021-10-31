@@ -52,7 +52,7 @@ class Queue
                 foreach (self::$cache[$xuid] as $item) self::addItem($xuid, $item, true);
                 unset(self::$cache[$xuid]);
                 unset(self::$task[$xuid]);
-            }), 3 * 20);
+            }), 10 * 20);
         }
         foreach (self::$cache[$xuid] as $key => $cacheItem) {
             if (!$cacheItem instanceof Item) continue;
@@ -64,7 +64,7 @@ class Queue
                     foreach (self::$cache[$xuid] as $item) self::addItem($xuid, $item, true);
                     unset(self::$cache[$xuid]);
                     unset(self::$task[$xuid]);
-                }), 3 * 20);
+                }), 10 * 20);
                 return;
             }
         }
