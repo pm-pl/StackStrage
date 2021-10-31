@@ -70,7 +70,7 @@ class Queue
         self::add($xuid, $item->setCount(-$item->getCount()));
     }
 
-    private static function addItem(string $xuid, Item $item, bool $isTask = false): void
+    static function addItem(string $xuid, Item $item, bool $isTask = false): void
     {
         if ($item->getCount() === 0) return;
         self::enqueue($xuid, function () use ($item, $xuid) {

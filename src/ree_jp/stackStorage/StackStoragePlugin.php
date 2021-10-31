@@ -42,13 +42,16 @@ class StackStoragePlugin extends PluginBase
             }
         }
         $timer = 0;
+        foreach ($this->getServer()->getOnlinePlayers() as $p) {
+            foreach (Queue::$cache[$p->getXuid()] as $item) Queue::addItem($p->getXuid(), $item, true);
+        }
+        var_dump(Queue::$queues);
         while (!Queue::isEmpty() && $timer < 30) {
             $timer++;
             sleep(1);
         }
         if ($timer >= 30) {
             var_dump(Queue::$queues);
-            var_dump(Queue::$task);
             $this->getLogger()->critical('The data could not be saved');
         }
         StackStorageHelper::$instance->close();
