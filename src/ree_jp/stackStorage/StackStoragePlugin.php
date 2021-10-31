@@ -43,6 +43,7 @@ class StackStoragePlugin extends PluginBase
         }
         $timer = 0;
         foreach ($this->getServer()->getOnlinePlayers() as $p) {
+            if (!isset(Queue::$cache[$p->getXuid()])) continue;
             foreach (Queue::$cache[$p->getXuid()] as $item) Queue::addItem($p->getXuid(), $item, true);
         }
         var_dump(Queue::$queues);
